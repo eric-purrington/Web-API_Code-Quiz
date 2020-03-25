@@ -1,3 +1,46 @@
-.blockContainer {
+#blockContainer {
+    display: block;
+    margin: auto;
+    margin-top: 150px;
+    border-width: 0 10px;
+    border: solid green;
+    height: 250px;
+    width: 500px;
+
+}
+
+#viewHs {
+    font-size: 20px;
+    font-weight: bold;
+} 
+
+#time {
+    font-size: 20px;
+    font-weight: bold;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+}
+
+h1 {
+    font-size: 50px;
+    font-weight: bolder;
     text-align: center;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, serif
+}
+
+h2 {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+button {
+    display: block;
+    margin: 5px;
+    color: white;
+    background-color: purple;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 15px;
+    border-radius: 25px;
 }
