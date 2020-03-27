@@ -3,16 +3,11 @@
     margin: auto;
     margin-top: 150px;
     border-width: 0 10px;
-    border: solid green;
-    height: 250px;
-    width: 500px;
-
+    border: solid rgb(199, 212, 10);
+    height: 350px;
+    width: 600px;
+    border-radius: 25px;
 }
-
-#viewHs {
-    font-size: 20px;
-    font-weight: bold;
-} 
 
 #time {
     font-size: 20px;
@@ -26,21 +21,65 @@ h1 {
     font-size: 50px;
     font-weight: bolder;
     text-align: center;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, serif
+    margin: 25px 5px 25px 5px;
+    font-family: 'Indie Flower', cursive;
 }
 
 h2 {
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
     text-align: center;
+    margin: 25px 0px 25px 0px;
+}
+
+#HDM {
+    font-family: ;
+}
+
+#LOTR {
+    font-family: ;
+}
+
+#StarWars {
+    font-family: ;
+}
+
+#Marvel {
+    font-family: ;
+}
+
+#HP {
+    font-family: ;
+}
+
+p {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 button {
     display: block;
-    margin: 5px;
+    margin: 5px 0px 5px 20px;
     color: white;
-    background-color: purple;
+    background-color: rgba(128, 0, 32, 0.863);
     font-family: 'Times New Roman', Times, serif;
     font-size: 15px;
     border-radius: 25px;
+    padding: 5px 10px 5px 10px;
+}
+
+#viewHs {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+hr {
+    color: rgba(128, 0, 32, 0.863);
+    opacity: .75;
+}
+
+h3 {
+    color: rgba(128, 0, 32, 0.863);
+    opacity: .75;
 }

@@ -24,17 +24,29 @@ var questions = [{
     correctAnswer: "3. Pheonix"
 }
 ];
+
+// Grabbing elements from the html 
 var blockContainer = document.getElementById("blockContainer");
 var timeEl = document.getElementById("time");
 var hsEl = document.getElementById("viewHs");
+hsEl.addEventListener("click", highscorePage);
+
+// Setting current question to the first one, setting time to 60, and creating a global initials string to be pulled from multiple functions
 var currentQ = 0;
-secondsLeft = 60;
+var secondsLeft = 60;
+
+var initialsAndScores = [];
+var initialsArray = [];
+var scoresArray = [];
 
 // Calls first page function immediately
 startPage();
 
 // Start page function
 function startPage() {
+    // Clears blockContainer incase user comes from highscore page
+    blockContainer.innerHTML = "";
+
     // Creating the variables for each element on the Start Page
     var quizTitle = document.createElement("h1");
     var quizExp = document.createElement("p");
@@ -57,7 +69,9 @@ function startPage() {
 
 // Timer function taken from class activity with minor changes
 function setTime() {
-    
+    // Make time start at 60 with every restart
+    secondsLeft = 60;
+
     // Sets interval and starts the countdown (per 1000ms)
     var timerInterval = setInterval(function () {
         secondsLeft--;
@@ -75,23 +89,44 @@ function setTime() {
 
 // This function cycles through the questions erasing the questions before
 function questionBlock(event) {
+    // Clear previous blockContainer children
     blockContainer.innerHTML = "";
-    var question = document.createElement("h2");
-    var ansBtns = [document.createElement("button"),
-                   document.createElement("button"),
-                   document.createElement("button"),
-                   document.createElement("button")];
 
+    // Create question and an empty array for the answer buttons
+    var question = document.createElement("h2");
+    var ansBtns = [];
+
+    // Writing out current question and appending the element
     question.textContent = questions[currentQ].question;
     blockContainer.appendChild(question);
 
+    // Adding ids to h2 per question to style
+    if (currentQ == 0) {
+        question.setAttribute("id", "HDM");
+    } else if (currentQ == 1) {
+        question.setAttribute("id", "LOTR");
+    } else if (currentQ == 2) {
+        question.setAttribute("id", "StarWars");
+    } else if (currentQ == 3) {
+        question.setAttribute("id", "Marvel");
+    } else if (currentQ == 4) {
+        question.setAttribute("id", "HP");
+    }
+
+    // For loop to cycle through ansBtns, writing what each answer is and appending them as well as listening for a click 
     for (i = 0; i < 4; i++) {
+        ansBtns[i] = document.createElement("button");
         ansBtns[i].textContent = questions[currentQ].answers[i];
         blockContainer.appendChild(ansBtns[i]);
+
+        // Function that compares what the user chose and what the correct answer is
         ansBtns[i].onclick = function ansCheck(event) {
+
+            // Create the line and answer response ie correct/wrong
             var hr = document.createElement("hr");
             var ansResp = document.createElement("h3");
 
+            // Comparison and counts up on current question index
             if (this.textContent == questions[currentQ].correctAnswer) {
                 ansResp.textContent = "Correct!";
                 currentQ++;
@@ -101,16 +136,19 @@ function questionBlock(event) {
                 secondsLeft -= 5;
             }
 
+            // Function that appends the line and response
             setTimeout(function () {
                 blockContainer.appendChild(hr);
                 blockContainer.appendChild(ansResp);
             }, 0);
 
+            // Function that deletes the line and response after one second
             setTimeout(function () {
-                blockContainer.removeChild(hr);
-                blockContainer.removeChild(ansResp);
+                hr.parentNode.removeChild(hr);
+                ansResp.parentNode.removeChild(ansResp);
             }, 1000);
 
+            // Tests whether to restart questionBlock or go to initialsPage
             if (currentQ == 5) {
                 initialsPage();
             } else {
@@ -120,54 +158,98 @@ function questionBlock(event) {
     }
 }
 
+// Function that initializes initials page
 function initialsPage() {
+    // Clear previous blockContainer children
     blockContainer.innerHTML = "";
+
+    // Creating variables for each element that needs appending
     var allDone = document.createElement("h1");
     var finScore = document.createElement("p");
-
-    // !!!! THESE BOTH NEED TO ME IN A FUCKING FORM
-    var submitBtn = document.createElement("button");
     var initialsInput = document.createElement("input");
+    var initialsLabel = document.createElement("label");
+    var submitBtn = document.createElement("button");
+    initialsLabel.setAttribute("for", "initialsInput");
 
-    initialsInput.setAttribute("type", "text");
+    // Giving some body to those elements
     allDone.textContent = "All done!";
     finScore.textContent = "Your score was " + secondsLeft + "!";
     submitBtn.textContent = "Submit";
-
+    initialsLabel.textContent = "Enter your initials:";
+ 
+    // Putting those elements into the blockContainer
     blockContainer.appendChild(allDone);
     blockContainer.appendChild(finScore);
-    blockContainer.appendChild(submitBtn);
+    blockContainer.appendChild(initialsLabel);
     blockContainer.appendChild(initialsInput);
+    blockContainer.appendChild(submitBtn);
 
-    localStorage.setItem("Score", secondsLeft);
-    localStorage.setItem("initials", initialsInput.value);
+    // Submit button is clicked the initials and score are put into their arrays
+    submitBtn.onclick = function saveInitials(event) {
+        initialsArray.push(initialsInput.value);
+        scoresArray.push(secondsLeft);
+        for (i = 0; i < initialsArray.length; i++) {
+            initialsAndScores.push({ initials: initialsArray[i], score: scoresArray[i] });
+            if (i > 0) {
+                initialsAndScores.sort(function (a, b) {
+                    return b.score - a.score;
+                });
+            }
+        }
+        initialsAndScores = JSON.stringify(initialsAndScores);
+        localStorage.setItem("initialsAndScores", initialsAndScores);
+    }
+
+    // Submit button also starts the highscorePage function after saving initials and score
     submitBtn.addEventListener("click", highscorePage);
 }
 
+// Function that runs the highscore page
 function highscorePage(event) {
+    // Event delegation
+    event.preventDefault();
+
+    // Clear previous blockContainer children
     blockContainer.innerHTML = "";
+
+    // Creating variables for each element that needs appending
     var hsHead = document.createElement("h1");
     var hsList = document.createElement("ol");
-    var initialsAndScore = document.createElement("li");
     var goBack = document.createElement("button");
     var clearHS = document.createElement("button");
+    var storedInitialsAndScores = JSON.parse(localStorage.getItem("initialsAndScores"))
+    var li = [];
 
+    // Putting some context into those elements
     hsHead.textContent = "Highscores";
     clearHS.textContent = "Clear HighScores";
     goBack.textContent = "Restart";
-    var initials = localStorage.getItem("initials");
-    var score = localStorage.getItem("Score");
-    initialsAndScore.textContent = initials + "-" + score;
 
+    // Creates list of ordered highscores from storage and appends each one
+    for (i = 0; i < storedInitialsAndScores.length; i++){
+        li[i] = document.createElement("li");
+        li[i].textContent = i + 1 + ". " + storedInitialsAndScores[i].initials + ": " + storedInitialsAndScores[i].score;
+        hsList.appendChild(li[i]);
+    }
+
+    // Appending the rest of the elements
     blockContainer.appendChild(hsHead);
     blockContainer.appendChild(hsList);
-    hsList.appendChild(initialsAndScore);
     blockContainer.appendChild(clearHS);
     blockContainer.appendChild(goBack);
-    
+
+    // Function that clears the arrays, strings, and content of highscores
     clearHS.onclick = function (event) {
         hsList.textContent = "";
+        // initialsAndScores = [];
+        // initialsArray = [];
+        // scoresArray = [];
     }
-    goBack.addEventListener("click", startPage);
 
+    // Function that sends the user back to the starts, zeros the current question and empties the initials and scores array so more can be added
+    goBack.onclick = function (event) {
+        currentQ = 0;
+        initialsAndScores = [];
+        startPage();
+    }
 }
