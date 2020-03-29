@@ -10,7 +10,7 @@ var questions = [{
 }, 
     {
     question: "Star Wars: How fast can the Millennium Falcon make the Kessel Run?",
-    answers: ["1. Less than twelve parsecs", "2. Less than nineteen parsecs", "3. Exactly twenty-two parsecs", "4. The Kessel Run can not be accessed by Resistance Scum"],
+    answers: ["1. Less than twelve parsecs", "2. Less than nineteen parsecs", "3. Exactly twenty-two parsecs", "4. The Kessel Run can not be accessed by Rebel Scum"],
     correctAnswer: "1. Less than twelve parsecs",
 }, 
     {
@@ -39,6 +39,14 @@ var initialsAndScores = [];
 var initialsArray = [];
 var scoresArray = [];
 
+// This grabs the initialsAndScores from previous loads
+if (localStorage.getItem("initialsAndScores") !== null) {
+    var preReload = JSON.parse(localStorage.getItem("initialsAndScores"));
+    for (i = 0; i < preReload.length; i++){
+        initialsAndScores.push({ initials: preReload[i].initials, score: preReload[i].score });
+    }
+}
+
 // Calls first page function immediately
 startPage();
 
@@ -54,7 +62,7 @@ function startPage() {
 
     // Putting content into those elements
     quizTitle.textContent = "Fantasy Worlds Quiz";
-    quizExp.textContent = "Come one, come all! Test your knowledge on Eric's favorite fantasy worlds! 60 seconds on the clock! 5 seconds will be deducted with each wrong answer! Good luck...";
+    quizExp.textContent = "Test your knowledge on Eric's favorite fantasy worlds! You have 60 seconds to answer these five questions. Five seconds will be deducted with each wrong answer. Good luck...";
     startBtn.textContent = "Start Quiz";
     
     // Appending those children to their parent
@@ -82,7 +90,7 @@ function setTime() {
         // If we are on the 6th element (doesn't exist) of the questions array then it will stop the time and start the initials page function
         if (currentQ === 5) {
             clearInterval(timerInterval);
-            initialsPage();
+            // initialsPage();
         }
     }, 1000);
 }
@@ -128,10 +136,10 @@ function questionBlock(event) {
 
             // Comparison and counts up on current question index
             if (this.textContent == questions[currentQ].correctAnswer) {
-                ansResp.textContent = "Correct!";
+                ansResp.textContent = "Correct";
                 currentQ++;
             } else {
-                ansResp.textContent = "Wrong!";
+                ansResp.textContent = "Wrong";
                 currentQ++;
                 secondsLeft -= 5;
             }
@@ -172,8 +180,8 @@ function initialsPage() {
     initialsLabel.setAttribute("for", "initialsInput");
 
     // Giving some body to those elements
-    allDone.textContent = "All done!";
-    finScore.textContent = "Your score was " + secondsLeft + "!";
+    allDone.textContent = "Nice Job!";
+    finScore.textContent = "You completed with " + secondsLeft + " seconds to spare!";
     submitBtn.textContent = "Submit";
     initialsLabel.textContent = "Enter your initials:";
  
@@ -188,6 +196,15 @@ function initialsPage() {
     submitBtn.onclick = function saveInitials(event) {
         initialsArray.push(initialsInput.value);
         scoresArray.push(secondsLeft);
+
+        // If there was a preReload and more than one initial then we push those older scores
+        if (preReload != null && initialsArray.length > 1) {
+            for (i = 0; i < preReload.length; i++) {
+                initialsAndScores.push({ initials: preReload[i].initials, score: preReload[i].score });
+            }
+        }
+
+        // Then we push the new stuff and sort it
         for (i = 0; i < initialsArray.length; i++) {
             initialsAndScores.push({ initials: initialsArray[i], score: scoresArray[i] });
             if (i > 0) {
@@ -196,6 +213,8 @@ function initialsPage() {
                 });
             }
         }
+
+        // Saving that array with new stuff and old stuff
         initialsAndScores = JSON.stringify(initialsAndScores);
         localStorage.setItem("initialsAndScores", initialsAndScores);
     }
@@ -241,9 +260,10 @@ function highscorePage(event) {
     // Function that clears the arrays, strings, and content of highscores
     clearHS.onclick = function (event) {
         hsList.textContent = "";
-        // initialsAndScores = [];
-        // initialsArray = [];
-        // scoresArray = [];
+        initialsArray = [];
+        scoresArray = [];
+        initialsAndScores = [];
+        preReload = [];
     }
 
     // Function that sends the user back to the starts, zeros the current question and empties the initials and scores array so more can be added

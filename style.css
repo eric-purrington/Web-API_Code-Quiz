@@ -1,85 +1,96 @@
+/* Big block in middle of page */
 #blockContainer {
     display: block;
     margin: auto;
     margin-top: 150px;
-    border-width: 0 10px;
-    border: solid rgb(199, 212, 10);
+    border: 12px double rgba(128, 0, 32, 0.863);
     height: 350px;
     width: 600px;
     border-radius: 25px;
 }
-
+/* Time stamp fixed to top right */
 #time {
     font-size: 20px;
     font-weight: bold;
     position: fixed;
     top: 0px;
     right: 0px;
+    font-family: 'Times New Roman', Times, serif;
 }
-
+/* Highscore stamp fixed to top left */
+#viewHs {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+/* Main title of front, initials, and highscore page */
 h1 {
     font-size: 50px;
     font-weight: bolder;
     text-align: center;
-    margin: 25px 5px 25px 5px;
-    font-family: 'Indie Flower', cursive;
+    margin: 45px 5px 25px 5px;
+    font-family: 'Julius Sans One', sans-serif;
 }
-
+/* Questions */
 h2 {
     font-size: 35px;
     font-weight: bold;
     text-align: center;
     margin: 25px 0px 25px 0px;
 }
-
+/* Different font for each question based on world type */
 #HDM {
-    font-family: ;
+    font-family: 'Elsie', cursive;
 }
-
 #LOTR {
-    font-family: ;
+    font-family: 'Bilbo', cursive;
 }
-
 #StarWars {
-    font-family: ;
+    font-family: 'Orbitron', sans-serif;
 }
-
 #Marvel {
-    font-family: ;
+    font-family: 'Marvel', sans-serif;
 }
-
 #HP {
-    font-family: ;
+    font-family: 'Amatic SC', cursive;
 }
-
+/* Smaller text in title and initials page */
 p {
     font-size: 20px;
     text-align: center;
-    margin-bottom: 20px;
+    margin: 20px;
+    font-family: 'Times New Roman', Times, serif;
 }
-
+/* buttons! */
 button {
     display: block;
     margin: 5px 0px 5px 20px;
-    color: white;
+    color: rgb(201, 198, 15);
     background-color: rgba(128, 0, 32, 0.863);
     font-family: 'Times New Roman', Times, serif;
     font-size: 15px;
     border-radius: 25px;
     padding: 5px 10px 5px 10px;
 }
-
-#viewHs {
+/* Text asking for initials */
+label {
+    margin: 20px;
     font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+}
+/* highscore list components */
+li {
+    background-color: rgb(201, 198, 15);
+    color: rgba(128, 0, 32, 0.863);
     font-weight: bold;
+    margin: 5px 20px;
+    padding: 3px;
 }
-
-hr {
-    color: rgba(128, 0, 32, 0.863);
+/* Answer response and hr line */
+hr, h3 {
+    color: rgb(201, 198, 15);
     opacity: .75;
 }
-
 h3 {
-    color: rgba(128, 0, 32, 0.863);
-    opacity: .75;
+    font-size: 15px;
 }
