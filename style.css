@@ -1,3 +1,7 @@
+body, html {
+    background-image: url(bark.png);
+}
+
 /* Big block in middle of page */
 #blockContainer {
     display: block;
@@ -7,6 +11,7 @@
     height: 350px;
     width: 600px;
     border-radius: 25px;
+    background-color: white;
 }
 /* Time stamp fixed to top right */
 #time {
